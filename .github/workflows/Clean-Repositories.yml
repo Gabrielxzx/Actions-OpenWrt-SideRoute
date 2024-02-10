@@ -1,0 +1,71 @@
+name: Clean Repositories
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
+  schedule:
+    - cron: 0 23 * * *
+
+jobs:
+  Clean_Repositories:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Remove old Releases
+        uses: dev-drprasad/delete-older-releases@v0.3.2
+        with:
+            keep_latest: 40
+            delete_tags: true
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete Sunxi CortexA7 workflow
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+            token: ${{ github.token }}
+            repository: ${{ github.repository }}
+            delete_workflow_pattern: Build Sunxi CortexA7 OpenWrt
+            retain_days: 1
+            keep_minimum_runs: 4
+
+      - name: Delete Sunxi CortexA53 workflow
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+            token: ${{ github.token }}
+            repository: ${{ github.repository }}
+            delete_workflow_pattern: Build Sunxi CortexA53 OpenWrt
+            retain_days: 1
+            keep_minimum_runs: 4
+
+      - name: Delete RockChip RK3328 workflow
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+            token: ${{ github.token }}
+            repository: ${{ github.repository }}
+            delete_workflow_pattern: Build RockChip RK3328 OpenWrt
+            retain_days: 1
+            keep_minimum_runs: 4
+
+      - name: Delete RockChip RK3568 workflow
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+            token: ${{ github.token }}
+            repository: ${{ github.repository }}
+            delete_workflow_pattern: Build RockChip RK3568 OpenWrt
+            retain_days: 1
+            keep_minimum_runs: 4
+
+      - name: Delete workflow runs
+#        uses: GitRML/delete-workflow-runs@main
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+            token: ${{ github.token }}
+            repository: ${{ github.repository }}
+            delete_workflow_pattern: Clean Repositories
+            retain_days: 1
+            keep_minimum_runs: 4
