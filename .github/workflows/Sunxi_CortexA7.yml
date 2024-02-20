@@ -19,7 +19,7 @@ on:
         required: false
         default: 'false'
   schedule:
-    - cron: 0 17 * * *
+    - cron: 0 16 * * *
 
 
 env:
@@ -38,6 +38,8 @@ env:
 jobs:
   build-LEDE:
     runs-on: ubuntu-latest
+    permissions: 
+      contents: write
 
     steps:
     - name: Check server performance
