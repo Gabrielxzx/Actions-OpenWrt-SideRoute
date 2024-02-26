@@ -15,7 +15,7 @@ jobs:
   Clean_Repositories:
     runs-on: ubuntu-latest
     permissions: 
-      contents: read/write
+      contents: write
 
     steps:
       - name: Remove old Releases
